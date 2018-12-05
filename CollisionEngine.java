@@ -14,6 +14,7 @@ public class CollisionEngine {
     private final Camera camera;
     private final TileEngine tileEngine;
     private final List<Mover> collidingActors;
+    private final List<Tile> collidingTiles;
 
     /**
      * The constructor of the CollisionEngine.
@@ -161,6 +162,22 @@ public class CollisionEngine {
             }
         }
         return tiles;
+    }
+    
+    /**
+     * Getting the colliding Tiles from the collision engine
+     *
+     * @param mover A Mover class or a extend of it.
+     * @param addNoneSolid If true it also add tiles that are not solid to the
+     * list
+     * @return A List of overlapping tiles.
+     */
+    public List<Tile> getCollidingTiles(Mover mover, boolean addNoneSolid){
+        int actorLeft = getActorLeft(mover);
+        int actorRight = getActorRight(mover);
+        int actorTop = getActorTop(mover);
+        int actorBottom = getActorBottom(mover);
+        return this.getCollidingTiles(actorTop, actorLeft, actorRight, actorBottom, mover.getX(), mover.getY(), addNoneSolid);
     }
 
     /**

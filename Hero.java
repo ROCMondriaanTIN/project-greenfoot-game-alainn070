@@ -1,4 +1,5 @@
 import greenfoot.*;
+import java.util.List;
 
 /**
  *
@@ -38,18 +39,21 @@ public class Hero extends Mover {
     private int frame = 1;
     private int speed = 3;
     private boolean onGround;
+    private int levens = 5;
+    private int spawnX;
+    private int spawnY;
+    private CollisionEngine collisionEngine;
+    private TileEngine tileEngine;
     
 
-    public Hero() {
+    public Hero(CollisionEngine collisionEngine, TileEngine tileEngine) {
         super();
+        this.collisionEngine = collisionEngine;
+        this.tileEngine = tileEngine;
         gravity = 9.8;
         acc = 1.5;
         drag = 0.5;
-        setImage("p1.png");        
-        GreenfootImage myImage = getImage();
-        int myNewHeight = (int)myImage.getHeight()*3/4;
-        int myNewWidth = (int)myImage.getWidth()*3/4;
-        myImage.scale(myNewWidth, myNewHeight);
+        setImage("p1.png");                
     }
 
     @Override
@@ -71,6 +75,48 @@ public class Hero extends Mover {
             }
         }
     }
+    
+    List <Tile> tiles = collisionEngine.getCollidingTiles(this, true);
+
+    for (Tile tile : tiles) {
+            if (tile != null) {
+                if (tile.type == TileType.LIQUID) {
+                    getWorld().removeObject(this);
+                    return;
+                } else if (tile.type == TileType.SPIKES) {
+                    getWorld().removeObject(this);
+                    return;
+                }
+                
+                    
+                if(Greenfoot.isKeyDown("e")) {
+                   if (tile.type == TileType.KEYGREEN) {
+                       tileEngine.removeTile(tile);
+                       for(Door door : getWorld().getObjects(Door.class) ) {
+                           if(door.type == TileType.GREENLOCK) {
+                               tileEngine.removeTile(door);
+                            }
+                        }
+                        
+                        if (tile.type == TileType.KEYBLUE) {
+                            tileEngine.removeTile(tile);
+                       for(Door door : getWorld().getObjects(Door.class) ) {
+                           if(door.type == TileType.BLUELOCK) {
+                               tileEngine.removeTile(door);
+                            }
+                        }
+                        
+                        }
+                         if (tile.type == TileType.GEMBLUE) {
+                            tileEngine.removeTile(tile);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    *
     boolean onGround(){
         Actor under = getOneObjectAtOffset(0, getImage().getHeight()/2, Tile.class);
         return under != null;
@@ -208,4 +254,3 @@ public class Hero extends Mover {
         frame ++;
        }
     }
-

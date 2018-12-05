@@ -10,7 +10,6 @@ public class Enemy extends Mover {
     private int xMax;
     private boolean firstAct;
     private int speed;
-    public static boolean enemyWon = false;
 
     public Enemy() {
         super();
@@ -29,9 +28,9 @@ public class Enemy extends Mover {
         if (firstAct) {
             firstAct = false;
             xMin = x - walkRange / 2;
-            xMax = x + walkRange / 2;  
-            if(isTouching(DoorTile.class)){
-            enemyWon = true;
+            xMax = x + walkRange / 2;
+        }
+        
         velocityX = speed;
         applyVelocity();
          if (getX() >= xMax) {
@@ -45,6 +44,6 @@ public class Enemy extends Mover {
         }
     }
 }
-}
-}
+
+
 
