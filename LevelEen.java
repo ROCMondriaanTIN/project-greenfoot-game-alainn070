@@ -75,8 +75,9 @@ public class LevelEen extends World
 
         // Alle objecten toevoegen aan de wereld: camera, main karakter en mogelijke enemies
         addObject(camera, 0, 0);
-        addObject(hero, 300, 200);
-        addObject(new Enemy(), 1602, 890);
+        addObject(hero, 70, 1273);
+        addObject(new Enemy(), 1114, 1273);
+        addObject(new Enemy(), 2064, 1273);
         
         // Force act zodat de camera op de juist plek staat.
         camera.act();
