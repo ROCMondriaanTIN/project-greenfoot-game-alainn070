@@ -58,6 +58,17 @@ public class Hero extends Mover {
     public void act() {
         handleInput();
         water();
+        eatKeys();
+        checkpoint();
+        eatKeys2();
+        eatKeys3();
+        eatKeys4();
+        Door1();
+        Door2();
+        Door3();
+        Door4();
+        Door5();
+        Door6();
         velocityX *= drag;
         velocityY += acc;
         if (velocityY > gravity) {
@@ -68,12 +79,19 @@ public class Hero extends Mover {
 
         for (Actor enemy : getIntersectingObjects(Enemy.class)) {
             if (enemy != null) {
-                getWorld().removeObject(this);
-                break;
+                //getWorld().removeObject(this);
+                setLocation(70, 1273);
+                break;                
+            }
+        }
+         for (Actor enemy : getIntersectingObjects(Enemy2.class)) {
+            if (enemy != null) {
+                //getWorld().removeObject(this);
+                setLocation(70, 1273);
+                break;                
             }
         }
     }
-    
     boolean onGround(){
         Actor under = getOneObjectAtOffset(0, getImage().getHeight()/2, Tile.class);
         return under != null;
@@ -210,6 +228,74 @@ public class Hero extends Mover {
             return;
         }
         frame ++;
-       }
-    }    
+        }
+    public String positie()
+    {
+    String k= "X"+getX()+" "+"Y"+getY();    
+    return k;
+    }
+    public int getWidth() {
+        return getImage().getWidth();
+    }
+
+    public int getHeight() {
+        return getImage().getHeight();
+    }
+    
+    public boolean eatKeys()
+    {
+        for(Actor keys : getIntersectingObjects(Key.class))
+        {
+        
+            if(isTouching(Key.class))
+            {
+                removeTouching(Key.class);
+                key= true;
+                break;
+            }
+        }
+        return key;
+    }
+    
+    public boolean eatKeys3()
+    {
+        for(Actor keys : getIntersectingObjects(Key3.class))
+        {
+        
+            if(isTouching(Key3.class))
+            {
+                removeTouching(Key3.class);
+                key3= true;
+                break;
+            }
+        }
+        return key;
+    }   
+
+     public boolean eatKeys2()
+    {
+        for(Actor keys : getIntersectingObjects(Key2.class))
+        {
+        
+            if(keys!=null)
+            {
+                removeTouching(Key2.class);
+                key2=true;
+                break;
+            }
+        }
+        return key2;
+    }
+     public boolean Door1()
+    {
+    if(key2==true && isTouching(DoorLock1.class))
+    
+    {
+   setLocation(549 , 3102);
+   key2=false;
+    }
+    return key2;
+    }
+}
+
    

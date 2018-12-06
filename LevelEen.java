@@ -78,6 +78,7 @@ public class LevelEen extends World
         addObject(hero, 70, 1273);
         addObject(new Enemy(), 1114, 1273);
         addObject(new Enemy(), 2064, 1273);
+        addObject(new Enemy2(), 1400, 1273);
         
         // Force act zodat de camera op de juist plek staat.
         camera.act();
