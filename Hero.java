@@ -9,7 +9,10 @@ public class Hero extends Mover {
 
     private final double gravity;
     private final double acc;
-    private final double drag;    
+    private final double drag;
+    boolean key=false;
+    boolean key2;
+    boolean key3;
     private GreenfootImage run1 = new GreenfootImage("p1_walk01 L.png");
     private GreenfootImage run2 = new GreenfootImage("p1_walk02 L.png");
     private GreenfootImage run3 = new GreenfootImage("p1_walk03 L.png");
@@ -40,6 +43,7 @@ public class Hero extends Mover {
     private int levens = 5;
     int x = 70;
     int y = 1273;
+    int coins= 0;
     private CollisionEngine collisionEngine;
     private TileEngine tileEngine;
     
@@ -58,8 +62,8 @@ public class Hero extends Mover {
     public void act() {
         handleInput();
         water();
+        lava();
         eatKeys();
-        checkpoint();
         eatKeys2();
         eatKeys3();
         eatKeys4();
@@ -69,6 +73,8 @@ public class Hero extends Mover {
         Door4();
         Door5();
         Door6();
+        levels();
+        detectPortal();
         velocityX *= drag;
         velocityY += acc;
         if (velocityY > gravity) {
@@ -99,7 +105,7 @@ public class Hero extends Mover {
         
     public void handleInput() { 
         if (Greenfoot.isKeyDown("w") && (onGround() == true)) {
-            velocityY = -15;
+            velocityY = -30;
             setImage("p1_jump.png");
         }
 
@@ -121,6 +127,13 @@ public class Hero extends Mover {
             }
         }
     }
+    public void lava(){
+        for (Actor hero : getIntersectingObjects(LavaTile.class)){
+            if(hero != null) {
+                setLocation(x,y);
+            }
+        }
+    }
 
     
 
@@ -132,8 +145,153 @@ public class Hero extends Mover {
         return getImage().getHeight();
     }
     
+     public boolean eatKeys()
+    {
+        for(Actor keys : getIntersectingObjects(Key.class))
+        {
+        
+            if(isTouching(Key.class))
+            {
+                removeTouching(Key.class);
+                key= true;
+                break;
+            }
+        }
+        return key;
+    }
     
+    public boolean eatKeys3()
+    {
+        for(Actor keys : getIntersectingObjects(Key3.class))
+        {
+        
+            if(isTouching(Key3.class))
+            {
+                removeTouching(Key3.class);
+                key3= true;
+                break;
+            }
+        }
+        return key;
+    }
+      
+     public boolean eatKeys2()
+    {
+        for(Actor keys : getIntersectingObjects(Key2.class))
+        {
+        
+            if(keys!=null)
+            {
+                removeTouching(Key2.class);
+                key2=true;
+                break;
+            }
+        }
+        return key2;
+    }
     
+     public int eatKeys4()   
+   {
+          if(isTouching(Coin.class))
+          {              
+                removeTouching(Coin.class);
+                coins++;
+           }      
+           return coins;
+        }
+        
+    public boolean Door1()
+    {
+    if(key2==true && isTouching(DoorLock1.class))
+    
+    {
+   setLocation(549 , 3102);
+   key2=false;
+    }
+    return key2;
+    }
+    
+    public boolean Door2()
+    {
+    if(key2==true && isTouching(DoorLock2.class))
+    
+    {
+   setLocation(143 , 3102);
+   key2=false;
+    }
+    return key2;
+    }
+    
+    public boolean Door3()
+    {
+    if(key2==true && isTouching(DoorLock3.class))
+    
+    {
+   setLocation(549 , 3102);
+   key2=false;
+    }
+    return key2;
+    }
+    
+    public boolean Door4()
+    {
+    if(key2==true && isTouching(DoorLock4.class))
+    
+    {
+   setLocation(544 , 3700);
+   key2=false;
+    }
+    return key2;
+    }
+                
+    public boolean Door5()
+    {
+    if(key2==true && isTouching(DoorLock5.class))
+    
+    {
+   setLocation(143 , 3102);
+   key2=false;
+    }
+    return key2;
+    }
+    
+    public boolean Door6()
+    {
+    if(key2==true && isTouching(DoorLock6.class))
+    
+    {
+   Greenfoot.setWorld(new LevelDrie());
+   key2=false;
+    }
+    return key2;
+    }
+    
+    public void levels ()
+    {
+    for (Actor deur: getIntersectingObjects(DoorLock7.class))
+        {
+        if (key3==true&&coins==21)
+        {
+           if(isTouching(DoorLock7.class))
+           Greenfoot.setWorld(new LevelVier());
+           String Active="LevelVier";
+        }
+        }    
+    }
+    
+    private void detectPortal()
+    {
+        for (Actor deur: getIntersectingObjects(DoorLock.class))
+        {
+        if (key==true)
+        {
+           if(isTouching(DoorLock.class))
+           Greenfoot.setWorld(new LevelTwee());
+           String Active="LevelTwee";
+        }
+        }
+        
+     }
     public void animatieRight() {
         if(frame == 1)
         {
@@ -229,73 +387,5 @@ public class Hero extends Mover {
         }
         frame ++;
         }
-    public String positie()
-    {
-    String k= "X"+getX()+" "+"Y"+getY();    
-    return k;
     }
-    public int getWidth() {
-        return getImage().getWidth();
-    }
-
-    public int getHeight() {
-        return getImage().getHeight();
-    }
-    
-    public boolean eatKeys()
-    {
-        for(Actor keys : getIntersectingObjects(Key.class))
-        {
-        
-            if(isTouching(Key.class))
-            {
-                removeTouching(Key.class);
-                key= true;
-                break;
-            }
-        }
-        return key;
-    }
-    
-    public boolean eatKeys3()
-    {
-        for(Actor keys : getIntersectingObjects(Key3.class))
-        {
-        
-            if(isTouching(Key3.class))
-            {
-                removeTouching(Key3.class);
-                key3= true;
-                break;
-            }
-        }
-        return key;
-    }   
-
-     public boolean eatKeys2()
-    {
-        for(Actor keys : getIntersectingObjects(Key2.class))
-        {
-        
-            if(keys!=null)
-            {
-                removeTouching(Key2.class);
-                key2=true;
-                break;
-            }
-        }
-        return key2;
-    }
-     public boolean Door1()
-    {
-    if(key2==true && isTouching(DoorLock1.class))
-    
-    {
-   setLocation(549 , 3102);
-   key2=false;
-    }
-    return key2;
-    }
-}
-
    

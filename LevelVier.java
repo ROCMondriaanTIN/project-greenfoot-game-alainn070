@@ -17,7 +17,7 @@ public class LevelVier extends World
     public LevelVier()
     {    
         super(1280, 720, 1, false);
-        this.setBackground("Bg.png");
+        this.setBackground("space2.jpg");
         
         int[][] map = {
             {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
@@ -73,8 +73,9 @@ public class LevelVier extends World
 
         // Alle objecten toevoegen aan de wereld: camera, main karakter en mogelijke enemies
         addObject(camera, 0, 0);
-        addObject(hero, 300, 200);
-        addObject(new Enemy(), 1602, 890);
+        addObject(hero, 97, 1373);
+        addObject(new Enemy(), 885, 1273);
+        addObject(new Enemy2(), 3614, 1393);
         
         // Force act zodat de camera op de juist plek staat.
         camera.act();
