@@ -76,6 +76,9 @@ public class LevelVier extends World
         addObject(hero, 97, 1373);
         addObject(new Enemy(), 885, 1273);
         addObject(new Enemy2(), 3614, 1393);
+        addObject(new KeyBlue(), 30, 25);
+        addObject(new KeyRed(), 80, 25);
+        addObject(new KeyGreen(), 130, 25);
         
         // Force act zodat de camera op de juist plek staat.
         camera.act();

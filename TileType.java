@@ -17,6 +17,8 @@ public enum TileType {
     KEYBLUE,
     KEYGREEN, 
     GEMBLUE,
+    GEMGREEN, 
+    GEMRED,
     SPIKES, 
     BLUELOCK,
     YELLOWLOCK,

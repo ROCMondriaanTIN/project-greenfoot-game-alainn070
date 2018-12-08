@@ -10,9 +10,6 @@ public class Hero extends Mover {
     private final double gravity;
     private final double acc;
     private final double drag;
-    boolean key=false;
-    boolean key2;
-    boolean key3;
     private GreenfootImage run1 = new GreenfootImage("p1_walk01 L.png");
     private GreenfootImage run2 = new GreenfootImage("p1_walk02 L.png");
     private GreenfootImage run3 = new GreenfootImage("p1_walk03 L.png");
@@ -40,6 +37,21 @@ public class Hero extends Mover {
     private int frame = 1;
     private int speed = 3;
     private boolean onGround;
+    private boolean isTouching;
+    private boolean start;
+    public static boolean collectGem;
+    public static int player = 1;
+    private int width;
+    public static boolean keyCollect = false;
+    public static boolean keyCollectRed = false;
+    public static boolean keyCollectBlue = false;
+    public static boolean keyCollectGreen = false;
+    public static boolean coinAdded = false;
+    public static boolean keyNotFound = false;
+    public static boolean blueOpen = false;
+    public static boolean greenOpen = false;
+    public static boolean redOpen = false;
+
     private int levens = 5;
     int x = 70;
     int y = 1273;
@@ -57,24 +69,15 @@ public class Hero extends Mover {
         drag = 0.8;
         setImage("p1.png");                
     }
-
+    private void removeTile(Tile tile) {
+        tile.getImage().setTransparency(0);
+        tile.isSolid = false;
+    }
     @Override
     public void act() {
         handleInput();
         water();
-        lava();
-        eatKeys();
-        eatKeys2();
-        eatKeys3();
-        eatKeys4();
-        Door1();
-        Door2();
-        Door3();
-        Door4();
-        Door5();
-        Door6();
-        levels();
-        detectPortal();
+        lava();        
         velocityX *= drag;
         velocityY += acc;
         if (velocityY > gravity) {
@@ -97,7 +100,70 @@ public class Hero extends Mover {
                 break;                
             }
         }
-    }
+         for (Tile tile : getIntersectingObjects(Tile.class)) {
+            if (start == false) {
+                getImage().scale(50, 70);
+                start = true;
+            }                       
+            if (tile.getImage().toString().contains("door_open")) {
+                Greenfoot.setWorld(new LevelTwee());
+                setLocation(300, 200);
+            }            
+            if (tile.getImage().toString().contains("hud_p1Alt.png")) {
+                getImage().scale(50, 70);
+                player = 1;
+            }
+            if (tile.getImage().toString().contains("hud_p2Alt.png")) {
+                getImage().scale(60, 90);
+                player = 2;
+            }
+            if (tile.getImage().toString().contains("hud_p3Alt.png")) {
+                getImage().scale(35, 50);
+                player = 3;
+            }
+            if (tile.getImage().toString().contains("gemBlue")) {
+                removeTile(tile);
+                collectGem = true;
+            }
+            if (tile.getImage().toString().contains("gemGreen")) {
+                removeTile(tile);
+                collectGem = true;
+            }
+            if (tile.getImage().toString().contains("gemRed")) {
+                removeTile(tile);
+                collectGem = true;
+            }
+
+            if (tile.getImage().toString().contains("keyBlue")) {
+                removeTile(tile);
+                blueOpen = true;
+            }
+
+            if (tile.getImage().toString().contains("keyRed")) {
+                removeTile(tile);
+                redOpen = true;
+            }
+
+            if (tile.getImage().toString().contains("keyGreen")) {
+                removeTile(tile);
+                greenOpen = true;
+            }
+            if (tile.getImage().toString().contains("lock_blue") && (blueOpen == true)) {
+                removeTile(tile);
+
+            }
+            if (tile.getImage().toString().contains("lock_green") && (greenOpen == true)) {
+                removeTile(tile);
+
+            }
+            if (tile.getImage().toString().contains("lock_red") && (redOpen == true)) {
+                removeTile(tile);
+
+            }
+
+        }
+    }  
+    
     boolean onGround(){
         Actor under = getOneObjectAtOffset(0, getImage().getHeight()/2, Tile.class);
         return under != null;
@@ -144,154 +210,7 @@ public class Hero extends Mover {
     public int getHeight() {
         return getImage().getHeight();
     }
-    
-     public boolean eatKeys()
-    {
-        for(Actor keys : getIntersectingObjects(Key.class))
-        {
         
-            if(isTouching(Key.class))
-            {
-                removeTouching(Key.class);
-                key= true;
-                break;
-            }
-        }
-        return key;
-    }
-    
-    public boolean eatKeys3()
-    {
-        for(Actor keys : getIntersectingObjects(Key3.class))
-        {
-        
-            if(isTouching(Key3.class))
-            {
-                removeTouching(Key3.class);
-                key3= true;
-                break;
-            }
-        }
-        return key;
-    }
-      
-     public boolean eatKeys2()
-    {
-        for(Actor keys : getIntersectingObjects(Key2.class))
-        {
-        
-            if(keys!=null)
-            {
-                removeTouching(Key2.class);
-                key2=true;
-                break;
-            }
-        }
-        return key2;
-    }
-    
-     public int eatKeys4()   
-   {
-          if(isTouching(Coin.class))
-          {              
-                removeTouching(Coin.class);
-                coins++;
-           }      
-           return coins;
-        }
-        
-    public boolean Door1()
-    {
-    if(key2==true && isTouching(DoorLock1.class))
-    
-    {
-   setLocation(549 , 3102);
-   key2=false;
-    }
-    return key2;
-    }
-    
-    public boolean Door2()
-    {
-    if(key2==true && isTouching(DoorLock2.class))
-    
-    {
-   setLocation(143 , 3102);
-   key2=false;
-    }
-    return key2;
-    }
-    
-    public boolean Door3()
-    {
-    if(key2==true && isTouching(DoorLock3.class))
-    
-    {
-   setLocation(549 , 3102);
-   key2=false;
-    }
-    return key2;
-    }
-    
-    public boolean Door4()
-    {
-    if(key2==true && isTouching(DoorLock4.class))
-    
-    {
-   setLocation(544 , 3700);
-   key2=false;
-    }
-    return key2;
-    }
-                
-    public boolean Door5()
-    {
-    if(key2==true && isTouching(DoorLock5.class))
-    
-    {
-   setLocation(143 , 3102);
-   key2=false;
-    }
-    return key2;
-    }
-    
-    public boolean Door6()
-    {
-    if(key2==true && isTouching(DoorLock6.class))
-    
-    {
-   Greenfoot.setWorld(new LevelDrie());
-   key2=false;
-    }
-    return key2;
-    }
-    
-    public void levels ()
-    {
-    for (Actor deur: getIntersectingObjects(DoorLock7.class))
-        {
-        if (key3==true&&coins==21)
-        {
-           if(isTouching(DoorLock7.class))
-           Greenfoot.setWorld(new LevelVier());
-           String Active="LevelVier";
-        }
-        }    
-    }
-    
-    private void detectPortal()
-    {
-        for (Actor deur: getIntersectingObjects(DoorLock.class))
-        {
-        if (key==true)
-        {
-           if(isTouching(DoorLock.class))
-           Greenfoot.setWorld(new LevelTwee());
-           String Active="LevelTwee";
-        }
-        }
-        
-     }
     public void animatieRight() {
         if(frame == 1)
         {
