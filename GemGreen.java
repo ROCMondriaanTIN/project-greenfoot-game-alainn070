@@ -6,7 +6,7 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class GemBlue extends Mover
+public class GemGreen extends Mover
 {
     /**
      * Act - do whatever the CoinHUD wants to do. This method is called whenever
@@ -14,7 +14,7 @@ public class GemBlue extends Mover
      */
     public void act() 
     {        
-        setImage("hud_gem_blue.png");
+        setImage("hud_gem_green.png");
         // Add your action code here.
 } 
 }

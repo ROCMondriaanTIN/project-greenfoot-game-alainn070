@@ -11,7 +11,7 @@ public class TileFactory {
      * @param mapIcon number
      * @return Tile tile object
      */
-    public static Tile createTile(int mapIcon) {
+    public Tile createTile(int mapIcon) {
         Tile tile;
         switch (mapIcon) {
             case 5:
@@ -101,21 +101,19 @@ public class TileFactory {
                 break;
             case 160:
                 tile = new Tile("hud_p1Alt.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
-                tile.isSolid = true;
+                tile.isSolid = false;
                 break;
             case 159:
                 tile = new Tile("hud_p1.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
-                tile.isSolid = true;
+                tile.isSolid = false;
                 break; 
             case 162:
                 tile = new Tile("hud_p2Alt.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
                 tile.isSolid = false;
-                tile.getImage().scale(50, 50);
                 break;
             case 164:
                 tile = new Tile("hud_p3Alt.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
-                tile.isSolid = false;
-                tile.getImage().scale(50, 50);
+                tile.isSolid = false;               
                 break;    
             case 174:
                 tile = new Tile("liquidLavaTop_mid.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);

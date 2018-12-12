@@ -51,8 +51,10 @@ public class Hero extends Mover {
     public static boolean blueOpen = false;
     public static boolean greenOpen = false;
     public static boolean redOpen = false;
-
-    private int levens = 5;
+    boolean coinGold= false;
+    public String worldName="";
+    public  int leven = 3;
+    private int levens = 3;
     int x = 70;
     int y = 1273;
     int coins= 0;
@@ -60,14 +62,14 @@ public class Hero extends Mover {
     private TileEngine tileEngine;
     
 
-    public Hero(CollisionEngine collisionEngine, TileEngine tileEngine) {
+     public Hero(CollisionEngine collisionEngine, TileEngine tileEngine) {
         super();
         this.collisionEngine = collisionEngine;
         this.tileEngine = tileEngine;
         gravity = 9.8;
         acc = 0.6;
         drag = 0.8;
-        setImage("p1.png");                
+        setImage("p1_front.png");
     }
     private void removeTile(Tile tile) {
         tile.getImage().setTransparency(0);
@@ -77,7 +79,8 @@ public class Hero extends Mover {
     public void act() {
         handleInput();
         water();
-        lava();        
+        lava();
+        eatcoinGold();
         velocityX *= drag;
         velocityY += acc;
         if (velocityY > gravity) {
@@ -85,7 +88,6 @@ public class Hero extends Mover {
         }
         applyVelocity();
         handleInput();
-
         for (Actor enemy : getIntersectingObjects(Enemy.class)) {
             if (enemy != null) {
                 //getWorld().removeObject(this);
@@ -99,52 +101,39 @@ public class Hero extends Mover {
                 setLocation(70, 1273);
                 break;                
             }
-        }
+        }    
          for (Tile tile : getIntersectingObjects(Tile.class)) {
-            if (start == false) {
-                getImage().scale(50, 70);
-                start = true;
+            if (start == true) {
+                start = false;
             }                       
             if (tile.getImage().toString().contains("door_open")) {
                 Greenfoot.setWorld(new LevelTwee());
                 setLocation(300, 200);
             }            
-            if (tile.getImage().toString().contains("hud_p1Alt.png")) {
-                getImage().scale(50, 70);
-                player = 1;
-            }
-            if (tile.getImage().toString().contains("hud_p2Alt.png")) {
-                getImage().scale(60, 90);
-                player = 2;
-            }
-            if (tile.getImage().toString().contains("hud_p3Alt.png")) {
-                getImage().scale(35, 50);
-                player = 3;
-            }
-            if (tile.getImage().toString().contains("gemBlue")) {
+            if (tile.getImage().toString().contains("GemBlue")) {
                 removeTile(tile);
                 collectGem = true;
             }
-            if (tile.getImage().toString().contains("gemGreen")) {
+            if (tile.getImage().toString().contains("GemGreen")) {
                 removeTile(tile);
                 collectGem = true;
             }
-            if (tile.getImage().toString().contains("gemRed")) {
+            if (tile.getImage().toString().contains("GemRed")) {
                 removeTile(tile);
                 collectGem = true;
             }
 
-            if (tile.getImage().toString().contains("keyBlue")) {
+            if (tile.getImage().toString().contains("KeyBlue")) {
                 removeTile(tile);
                 blueOpen = true;
             }
 
-            if (tile.getImage().toString().contains("keyRed")) {
+            if (tile.getImage().toString().contains("KeyRed")) {
                 removeTile(tile);
                 redOpen = true;
             }
 
-            if (tile.getImage().toString().contains("keyGreen")) {
+            if (tile.getImage().toString().contains("KeyGreen")) {
                 removeTile(tile);
                 greenOpen = true;
             }
@@ -169,40 +158,50 @@ public class Hero extends Mover {
         return under != null;
         }
         
-    public void handleInput() { 
-        if (Greenfoot.isKeyDown("w") && (onGround() == true)) {
-            velocityY = -30;
-            setImage("p1_jump.png");
+    public void handleInput() {
+        if (Greenfoot.isKeyDown("w")) {
+            velocityY = -20;
         }
 
-        else if (Greenfoot.isKeyDown("a")) {
-            velocityX = -5;
-            animatieLeft();
-        } 
-        if (Greenfoot.isKeyDown("d")) {
-            velocityX = 5;
-            animatieRight();
+        if (Greenfoot.isKeyDown("a")) {
+            velocityX = -2;
+        } else if (Greenfoot.isKeyDown("d")) {
+            velocityX = 2;
         }
-        
     }
     
+    public void lava(){
+        for(Actor hero : getIntersectingObjects(LavaTile.class)){
+            if(hero != null) {
+                setLocation(x,y);
+            }
+        }
+    }
     public void water(){
         for (Actor hero : getIntersectingObjects(WaterTile.class)){
             if(hero != null) {
                 setLocation(x,y);
             }
         }
-    }
-    public void lava(){
-        for (Actor hero : getIntersectingObjects(LavaTile.class)){
-            if(hero != null) {
-                setLocation(x,y);
+    }    
+    
+     public boolean eatcoinGold()
+
+    {
+        for(Actor coinGolder : getIntersectingObjects(CoinGoldTile.class))
+
+        {
+            if(isTouching(CoinGoldTile.class))
+
+            {
+                removeTouching(CoinGoldTile.class);
+                coinGold= true;
+                break;
             }
         }
+        return coinGold;
     }
-
     
-
     public int getWidth() {
         return getImage().getWidth();
     }
@@ -210,8 +209,8 @@ public class Hero extends Mover {
     public int getHeight() {
         return getImage().getHeight();
     }
-        
-    public void animatieRight() {
+
+public void animatieRight() {
         if(frame == 1)
         {
             setImage(run12);
@@ -254,11 +253,7 @@ public class Hero extends Mover {
             frame = 0;
             return;
         }
-        frame ++;
-        
-        
-        
-        
+        frame ++;                              
        }
        
            public void animatieLeft() {
@@ -305,6 +300,5 @@ public class Hero extends Mover {
             return;
         }
         frame ++;
-        }
     }
-   
+}
