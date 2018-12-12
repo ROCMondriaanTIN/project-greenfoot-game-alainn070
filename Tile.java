@@ -4,29 +4,34 @@ import greenfoot.*;
  *
  * @author R. Springer / Tom
  */
-public class Tile extends BasicTile {
+public class Tile extends Actor {
+
+    public boolean isSolid = false;
+    private static int id;
+    public int _id;
 
     /**
-     * Constructor of the tile. Creates a tile based on image, width and height
+     * Contructor of the tile. Creates a tile based on image, width and height
      *
      * @param image Path to the image file
      * @param width Width of the tile
      * @param heigth Height of the tile
      */
     public Tile(String image, int width, int heigth) {
-        super(image, width, heigth);
+        super();
+        setImage(image);
+        getImage().scale(width, heigth);
+        if (CollisionEngine.DEBUG) {
+            getImage().drawString("ÏD: " + id, 10, 10);
+        }
+        _id = id;
+        id++;
     }
 
-    /**
-     * Constructor of the tile. Creates a tile based on image, width, height and
-     * a tile type
-     *
-     * @param image Path to the image file
-     * @param width Width of the tile
-     * @param heigth Height of the tile
-     * @param type
-     */
-    public Tile(String image, int width, int heigth, TileType type) {
-        super(image, width, heigth, type);
+    @Override
+    public String toString() {
+        return "id: " + _id + "\n"
+                + "X: " + getX() + "\n"
+                + "Y: " + getY();
     }
 }

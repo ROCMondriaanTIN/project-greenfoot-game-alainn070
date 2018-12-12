@@ -38,23 +38,21 @@ public class Hero extends Mover {
     private int speed = 3;
     private boolean onGround;
     private boolean isTouching;
-    private boolean start;
-    public static boolean collectGem;
+    private boolean start;    
     public static int player = 1;
     private int width;
+    public static boolean GemCollectRed = false;
+    public static boolean GemCollectGreen = false;
+    public static boolean GemCollectBlue = false;
     public static boolean keyCollect = false;
     public static boolean keyCollectRed = false;
     public static boolean keyCollectBlue = false;
     public static boolean keyCollectGreen = false;
-    public static boolean coinAdded = false;
-    public static boolean keyNotFound = false;
     public static boolean blueOpen = false;
     public static boolean greenOpen = false;
     public static boolean redOpen = false;
-    boolean coinGold= false;
-    public String worldName="";
-    public  int leven = 3;
-    private int levens = 3;
+
+    private int levens = 5;
     int x = 70;
     int y = 1273;
     int coins= 0;
@@ -62,14 +60,14 @@ public class Hero extends Mover {
     private TileEngine tileEngine;
     
 
-     public Hero(CollisionEngine collisionEngine, TileEngine tileEngine) {
+    public Hero(CollisionEngine collisionEngine, TileEngine tileEngine) {
         super();
         this.collisionEngine = collisionEngine;
         this.tileEngine = tileEngine;
         gravity = 9.8;
         acc = 0.6;
         drag = 0.8;
-        setImage("p1_front.png");
+        setImage("p1.png");                
     }
     private void removeTile(Tile tile) {
         tile.getImage().setTransparency(0);
@@ -80,7 +78,6 @@ public class Hero extends Mover {
         handleInput();
         water();
         lava();
-        eatcoinGold();
         velocityX *= drag;
         velocityY += acc;
         if (velocityY > gravity) {
@@ -88,6 +85,7 @@ public class Hero extends Mover {
         }
         applyVelocity();
         handleInput();
+
         for (Actor enemy : getIntersectingObjects(Enemy.class)) {
             if (enemy != null) {
                 //getWorld().removeObject(this);
@@ -101,50 +99,57 @@ public class Hero extends Mover {
                 setLocation(70, 1273);
                 break;                
             }
-        }    
+        }
          for (Tile tile : getIntersectingObjects(Tile.class)) {
-            if (start == true) {
-                start = false;
-            }                       
+            if (start == false) {
+                start = true;
+            }    
+            
             if (tile.getImage().toString().contains("door_open")) {
                 Greenfoot.setWorld(new LevelTwee());
                 setLocation(300, 200);
-            }            
-            if (tile.getImage().toString().contains("GemBlue")) {
+            }    
+            
+            if (tile.getImage().toString().contains("gemBlue")) {
                 removeTile(tile);
-                collectGem = true;
+                GemCollectBlue = true;
             }
-            if (tile.getImage().toString().contains("GemGreen")) {
+            
+            if (tile.getImage().toString().contains("gemGreen")) {
                 removeTile(tile);
-                collectGem = true;
+                GemCollectGreen= true;
             }
-            if (tile.getImage().toString().contains("GemRed")) {
+            
+            if (tile.getImage().toString().contains("gemRed")) {
                 removeTile(tile);
-                collectGem = true;
+                GemCollectRed = true;
             }
 
-            if (tile.getImage().toString().contains("KeyBlue")) {
+            if (tile.getImage().toString().contains("keyBlue")) {
                 removeTile(tile);
                 blueOpen = true;
             }
 
-            if (tile.getImage().toString().contains("KeyRed")) {
+            if (tile.getImage().toString().contains("keyRed")) {
                 removeTile(tile);
                 redOpen = true;
             }
 
-            if (tile.getImage().toString().contains("KeyGreen")) {
+            if (tile.getImage().toString().contains("keyGreen")) {
                 removeTile(tile);
                 greenOpen = true;
             }
+            
             if (tile.getImage().toString().contains("lock_blue") && (blueOpen == true)) {
                 removeTile(tile);
 
             }
+            
             if (tile.getImage().toString().contains("lock_green") && (greenOpen == true)) {
                 removeTile(tile);
 
             }
+            
             if (tile.getImage().toString().contains("lock_red") && (redOpen == true)) {
                 removeTile(tile);
 
@@ -158,49 +163,38 @@ public class Hero extends Mover {
         return under != null;
         }
         
-    public void handleInput() {
-        if (Greenfoot.isKeyDown("w")) {
-            velocityY = -20;
+    public void handleInput() { 
+        if (Greenfoot.isKeyDown("w") && (onGround() == true)) {
+            velocityY = -18;
+            setImage("p1_jump.png");
         }
 
-        if (Greenfoot.isKeyDown("a")) {
-            velocityX = -2;
-        } else if (Greenfoot.isKeyDown("d")) {
-            velocityX = 2;
+        else if (Greenfoot.isKeyDown("a")) {
+            velocityX = -6;
+            animatieLeft();
+        } 
+        if (Greenfoot.isKeyDown("d")) {
+            velocityX = 6;
+            animatieRight();
         }
+        
     }
     
-    public void lava(){
-        for(Actor hero : getIntersectingObjects(LavaTile.class)){
-            if(hero != null) {
-                setLocation(x,y);
-            }
-        }
-    }
     public void water(){
         for (Actor hero : getIntersectingObjects(WaterTile.class)){
             if(hero != null) {
                 setLocation(x,y);
             }
         }
-    }    
-    
-     public boolean eatcoinGold()
-
-    {
-        for(Actor coinGolder : getIntersectingObjects(CoinGoldTile.class))
-
-        {
-            if(isTouching(CoinGoldTile.class))
-
-            {
-                removeTouching(CoinGoldTile.class);
-                coinGold= true;
-                break;
+    }
+    public void lava(){
+        for (Actor hero : getIntersectingObjects(LavaTile.class)){
+            if(hero != null) {
+                setLocation(x,y);
             }
         }
-        return coinGold;
     }
+    
     
     public int getWidth() {
         return getImage().getWidth();
@@ -209,8 +203,8 @@ public class Hero extends Mover {
     public int getHeight() {
         return getImage().getHeight();
     }
-
-public void animatieRight() {
+        
+    public void animatieRight() {
         if(frame == 1)
         {
             setImage(run12);
@@ -253,7 +247,11 @@ public void animatieRight() {
             frame = 0;
             return;
         }
-        frame ++;                              
+        frame ++;
+        
+        
+        
+        
        }
        
            public void animatieLeft() {
@@ -300,5 +298,6 @@ public void animatieRight() {
             return;
         }
         frame ++;
+        }
     }
-}
+   
