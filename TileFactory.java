@@ -84,7 +84,7 @@ public class TileFactory {
                 tile = new Tile("signLeft.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
                 break;
             case 82:
-                tile = new Tile("door_openMid.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+                tile = new Door("door_openMid.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT,TileType.DOOR_OPENMID);
                 break;
             case 83:
                 tile = new Tile("door_openTop.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
@@ -112,6 +112,22 @@ public class TileFactory {
                 tile.isSolid = false;
                 tile.getImage().scale(50, 50);
                 break;
+            case 134:
+            tile = new Tile("hud_1.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            tile.isSolid = false;
+            break;
+            case 135:
+            tile = new Tile("hud_2.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            tile.isSolid = false;
+            break;
+            case 136:
+            tile = new Tile("hud_3.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            tile.isSolid = false;
+            break;
+            case 137:
+            tile = new Tile("hud_4.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
+            tile.isSolid = false;
+            break;
             case 164:
                 tile = new Tile("hud_p3Alt.png", TileEngine.TILE_WIDTH, TileEngine.TILE_HEIGHT);
                 tile.isSolid = false;

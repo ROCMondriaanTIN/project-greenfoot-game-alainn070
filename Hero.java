@@ -78,6 +78,7 @@ public class Hero extends Mover {
         handleInput();
         water();
         lava();
+        toLevel2();
         velocityX *= drag;
         velocityY += acc;
         if (velocityY > gravity) {
@@ -103,12 +104,7 @@ public class Hero extends Mover {
          for (Tile tile : getIntersectingObjects(Tile.class)) {
             if (start == false) {
                 start = true;
-            }    
-            
-            if (tile.getImage().toString().contains("door_open")) {
-                Greenfoot.setWorld(new LevelTwee());
-                setLocation(300, 200);
-            }    
+            }             
             
             if (tile.getImage().toString().contains("gemBlue")) {
                 removeTile(tile);
@@ -157,6 +153,14 @@ public class Hero extends Mover {
 
         }
     }  
+    public void toLevel2() {
+        if(isTouching (Door.class)) {
+            if(getWorld() instanceof TitleScreen) Greenfoot.setWorld(new LevelEen());
+            if(getWorld() instanceof LevelEen) Greenfoot.setWorld(new LevelTwee());
+            if(getWorld() instanceof LevelTwee) Greenfoot.setWorld(new LevelDrie());
+            if(getWorld() instanceof LevelDrie) Greenfoot.setWorld(new LevelVier());
+        }
+    }
     
     boolean onGround(){
         Actor under = getOneObjectAtOffset(0, getImage().getHeight()/2, Tile.class);
